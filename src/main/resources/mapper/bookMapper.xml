@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.bookMapper">
+<!--public void addBook(Book book);-->
+    <insert id="addBook">
+        insert into t_book(`name`,`author`,`price`,`sales`,`stock`,`img_path`) values(#{name},#{author},#{price}
+            ,#{sales},#{stock},#{imgPath})
+    </insert>
+<!--    public void deleteBookById(Integer id);-->
+    <delete id="deleteBookById">
+        delete from t_book where id=#{id}
+    </delete>
+<!--      public void updateBook(Book book);-->
+    <update id="updateBook">
+        update t_book set name=#{name} and author=#{author} and sales=#{sales} and stock=#{stock} and price=#{price}
+img_path=#{imgPath} where id=#{id}
+    </update>
+<!--    public Book  queryBookById(@Param("id") Integer id);-->
+    <select id="queryBookById" resultType="Book">
+        select * from t_book where id=#{id}
+    </select>
+<!--      public List<Book> queryBooks();-->
+    <select id="queryBooks" resultType="Book">
+        select * from t_book
+    </select>
+</mapper>

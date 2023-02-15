@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.EmpMapper">
+<!--        Employee getDeptAndEmpByStepTwo(@Param("did") Integer did);-->
+    <resultMap id="DeptAndEmpByStepTwoResultMap" type="Employee">
+        <id property="empid" column="emp_id"/>
+        <result property="empname" column="emp_name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+    </resultMap>
+    <select id="getDeptAndEmpByStepTwo" resultMap="DeptAndEmpByStepTwoResultMap" >
+        select * from employee where dept_id=#{did}
+    </select>
+
+</mapper>

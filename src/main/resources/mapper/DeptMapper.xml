@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.DeptMapper">
+<!--     Department getDeptAndEmp(@Param("did") Integer did);-->
+    <resultMap id="DeptAndEmpResultMap" type="Department">
+        <id property="deptid" column="dept_id"></id>
+        <result property="deptname" column="dept_name"></result>
+        <collection property="employeeList" ofType="Employee">
+            <id property="empid" column="emp_id"/>
+            <result property="empname" column="emp_name"/>
+            <result property="age" column="age"/>
+            <result property="sex" column="sex"/>
+            <result property="email" column="email"/>
+        </collection>
+    </resultMap>
+    <select id="getDeptAndEmp" resultMap="DeptAndEmpResultMap">
+        select * from department left join employee on department.dept_id=employee.dept_id where department.dept_id=#{did}
+</select>
+    <resultMap id="DeptAndEmpByStepOneResultMap" type="Department">
+        <id property="deptid" column="dept_id"></id>
+        <result column="dept_name" property="deptname"></result>
+        <association property="employeeList" select="mapper.EmpMapper.getDeptAndEmpByStepTwo" column="dept_id"></association>
+    </resultMap>
+<!--        Department getDeptAndEmpByStepOne(@Param("did") Integer did);-->
+    <select id="getDeptAndEmpByStepOne" resultMap="DeptAndEmpByStepOneResultMap">
+        select * from department where dept_id=#{did}
+    </select>
+
+</mapper>

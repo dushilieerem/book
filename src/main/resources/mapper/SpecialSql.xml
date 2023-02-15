@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SpecialSql">
+<!--    List<User> getUserByLike(@Param("username") String name);-->
+    <select id="getUserByLike" resultType="user">
+        select * from t_user where username like "%"#{username}"%"
+    </select>
+<!--        int deteleMore(@Param("ids") String ids);-->
+    <delete id="deleteMore">
+        delete from t_user where id in (${ids})
+    </delete>
+<!--        List<User> getUserByTable(@Param("tablename") String tablename);-->
+    <select id="getUserByTable" resultType="user">
+        select * from ${tablename}
+    </select>
+<!--        void insertUser(User user);-->
+<insert id="insertUser" keyProperty="id" useGeneratedKeys="true">
+    insert into t_user values(null,#{username},#{password},#{email});
+</insert>
+</mapper>
