@@ -82,6 +82,7 @@ doPost(request,response);
         try {
             Method declaredMethod = this.getClass().getDeclaredMethod(action,HttpServletRequest.class,HttpServletResponse.class);
             declaredMethod.invoke(this,request,response);
+            System.out.println("11");
         } catch (Exception e) {
             e.printStackTrace();
         }
