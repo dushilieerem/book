@@ -16,8 +16,7 @@ public class ClientBookServlet extends HttpServlet {
     protected  void page(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException{
      int pageNO= WebUtils.parseInt(request.getParameter("pageNo"),1);
      int pageSize=WebUtils.parseInt(request.getParameter("pageSize"), Page.PAGE_SIZE);
-
-system.out.println("11");
+        System.out.println("111");
     }
 
 
