@@ -1,12 +1,15 @@
 package web;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import pojo.User;
 import service.serviceimpl.userserviceimpl;
 import service.userservice;
-import utils.WebUtils;
+
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -14,7 +17,7 @@ import java.lang.reflect.Method;
 @WebServlet(name = "UserServlet", value = "/UserServlet")
 public class UserServlet extends HttpServlet {
     userservice userservice=new userserviceimpl();
-    protected void regist(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
@@ -51,21 +54,38 @@ public class UserServlet extends HttpServlet {
             req.getRequestDispatcher("page/user/regist.jsp").forward(req, resp);
         }
     }
+    protected void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        1、销毁Session中用户登录的信息（或者销毁Session）
+        req.getSession().invalidate();
+//        2、重定向到首页（或登录页面）。
+        resp.sendRedirect(req.getContextPath());
+    }
 
 
-    protected void login(HttpServletRequest Request,HttpServletResponse Response) throws ServletException, IOException {
-        userservice userserviceimpl = new userserviceimpl();
-        String username=Request.getParameter("username");
-        String password=Request.getParameter("password");
-        User login = userserviceimpl.login(new User(username, password, null, null));
-        if(login==null){
-            System.out.println("登录失败");
-            Request.setAttribute("tsmsg","账号或者密码错误");
-            Request.setAttribute("username",username);
-            Request.getRequestDispatcher("page/user/login.jsp");
-        }else{
-            Request.getSession().setAttribute("user",login);
-            Request.getRequestDispatcher("index.jsp").forward(Request,Response);
+    protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
+        //  1、获取请求的参数
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        // 调用 userService.login()登录处理业务
+        User loginUser = userservice.login(new User(username, password, null, null));
+        // 如果等于null,说明登录 失败!
+        if (loginUser == null) {
+            // 把错误信息，和回显的表单项信息，保存到Request域中
+            req.setAttribute("msg", "用户或密码错误！");
+            req.setAttribute("username", username);
+            //   跳回登录页面
+            req.getRequestDispatcher("page/user/login.jsp").forward(req, resp);
+            System.out.println("11");
+        } else {
+            // 登录 成功
+            // 保存用户登录的信息到Session域中
+            req.getSession().setAttribute("user", loginUser);
+            System.out.println('1');
+            //跳到成功页面login_success.html
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
+
         }
 
     }
@@ -78,13 +98,19 @@ doPost(request,response);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     String action=request.getParameter("action");
+        String action=request.getParameter("action");
         try {
-            Method declaredMethod = this.getClass().getDeclaredMethod(action,HttpServletRequest.class,HttpServletResponse.class);
-            declaredMethod.invoke(this,request,response);
             System.out.println("11");
+            request.setCharacterEncoding("UTF-8");
+            // 解决响应的中文乱码
+            response.setContentType("text/html; charset=UTF-8");
+            Method method=this.getClass().getDeclaredMethod(action,HttpServletRequest.class,HttpServletResponse.class);
+            method.setAccessible(true);
+           method.invoke(this,request,response);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
+
         }
     }
 }

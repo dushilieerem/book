@@ -12,4 +12,6 @@ public interface bookMapper {
      public void updateBook(Book book);
      public Book  queryBookById(@Param("id") Integer id);
     public List<Book> queryBooks();
+    public int queryForPageTotalCount();
+    public List<Book> queryForPageItemsByPrice(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("min") int min, @Param("max") int max);
 }

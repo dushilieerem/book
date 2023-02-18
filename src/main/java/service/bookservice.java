@@ -13,5 +13,6 @@ public Page<Book> pageByPrice(int pageNo,int pageSize,int min,int max);
     public void updateBook(Book book);
     public Book  queryBookById(Integer id);
     public List<Book> queryBooks();
+    public int queryForPageTotalCount();
 
 }

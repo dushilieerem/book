@@ -22,7 +22,7 @@
 <div class="container">
     <div class="login-wrapper">
         <div class="header">用户登录</div>
-        <form action="UserServlet?login" method="post">
+        <form action="UserServlet?action=login" method="post">
         <div class="form-wrapper">
             <input type="text" name="username" placeholder="请输入用户名" class="input-item">
             <input type="password" name="password" placeholder="请输入密码" class="input-item">

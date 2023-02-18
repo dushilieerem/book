@@ -1,61 +1,91 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: liudeyi
-  Date: 2023/2/13
-  Time: 22:57
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>书城首页</title>
+
+    <%-- 静态包含 base标签、css样式、jQuery文件 --%>
     <%@ include file="/page/common/head.jsp"%>
+    <Script type="text/javascript">
+        $(function () {
+            // 给加入购物车按钮绑定单击事件
+            $("button.addToCart").click(function () {
+                /**
+                 * 在事件响应的function函数 中，有一个this对象，这个this对象，是当前正在响应事件的dom对象
+                 * @type {jQuery}
+                 */
+                var bookId = $(this).attr("bookId");
+                // location.href = "http://localhost:8080/book/CartServlet?action=addItem&id=" + bookId;
+
+                // 发ajax请求，添加商品到购物车
+                $.getJSON("http://localhost:8080/book/CartServlet","action=ajaxAddItem&id=" + bookId,function (data) {
+                    $("#cartTotalCount").text("您的购物车中有 " + data.totalCount + " 件商品");
+                    $("#cartLastName").text(data.lastName);
+
+                })
+                alert(data.totalCount);
+
+            });
+        });
+    </Script>
+
 </head>
 <body>
+
 <div id="header">
     <img class="logo_img" alt="" src="/img/logo.gif" >
     <span class="wel_word">网上书城</span>
     <div>
+        <%--如果用户还没有登录，显示     【登录 和注册的菜单】 --%>
         <c:if test="${empty sessionScope.user}">
-            <a href="page/user/login.jsp">登录</a> |
-            <a href="page/user/regist.jsp">注册</a> &nbsp;&nbsp;
+            <a href="login.jsp">登录</a> |
+            <a href="jsp/regist.jsp">注册</a> &nbsp;&nbsp;
         </c:if>
+        <%--如果已经登录，则显示 登录 成功之后的用户信息。--%>
         <c:if test="${not empty sessionScope.user}">
-            <span >欢迎<span class="um_span">${sessionScope.user.username}</span> </span>
-            <a href="jsp/order/order.jsp">我的订单</a>
+            <span>欢迎<span class="um_span">${sessionScope.user.username}</span>光临尚硅谷书城</span>
+            <a href="page/order/order.jsp">我的订单</a>
             <a href="UserServlet?action=logout">注销</a>&nbsp;&nbsp;&nbsp;
         </c:if>
+
+        <a href="jsp/cart/cart.jsp">购物车</a>
+        <a href="jsp/manager/manager.jsp">后台管理</a>
     </div>
 </div>
+
 <div id="main">
     <div id="book">
-        <div id="book_cond">
-            <form action="ClientBookServlet" method="get">
+        <div class="book_cond">
+            <form action="ClientBookServlet?" method="get">
                 <input type="hidden" name="action" value="pageByPrice">
-                价格：<input type="text" id="min" name="min" value="${param.min}">元-
+                价格：<input id="min" type="text" name="min" value="${param.min}"> 元 -
                 <input id="max" type="text" name="max" value="${param.max}"> 元
                 <input type="submit" value="查询" />
             </form>
         </div>
         <div style="text-align: center">
             <c:if test="${empty sessionScope.cart.items}">
+                <%--购物车为空的输出--%>
+                <span id="cartTotalCount"> </span>
                 <div>
                     <span style="color: red" id="cartLastName">当前购物车为空</span>
                 </div>
             </c:if>
-           <c:if test="${empty sessionScope.cart.items}">
-               <span id="cartTotalCount">您的购物车中有 ${sessionScope.cart.totalCount} 件商品</span>
-               <div>
-                   您刚刚将<span style="color: red" id="cartLastName">${sessionScope.lastName}</span>加入到了购物车中
-               </div>
-           </c:if>
-
+            <c:if test="${not empty sessionScope.cart.items}">
+                <%--购物车非空的输出--%>
+                <span id="cartTotalCount">您的购物车中有 ${sessionScope.cart.totalCount} 件商品</span>
+                <div>
+                    您刚刚将<span style="color: red" id="cartLastName">${sessionScope.lastName}</span>加入到了购物车中
+                </div>
+            </c:if>
         </div>
-        <c:forEach items="${sessionScope.page.items}" var="book">
+
+        <c:forEach items="${requestScope.page.items}" var="book">
             <div class="b_list">
                 <div class="img_div">
-                    <img src="${book.imgPath}" class="book_img" alt="">
+                    <img class="book_img" alt="" src="${book.imgPath}" />
                 </div>
                 <div class="book_info">
                     <div class="book_name">
@@ -82,13 +112,21 @@
                         <button bookId="${book.id}" class="addToCart">加入购物车</button>
                     </div>
                 </div>
-
             </div>
         </c:forEach>
-        </div>
+    </div>
+
+    <%--静态包含分页条--%>
     <%@include file="/page/common/page_nav.jsp"%>
 
+
+
+
+
 </div>
+
+<%--静态包含页脚内容--%>
 <%@include file="/page/common/footer.jsp"%>
+
 </body>
 </html>

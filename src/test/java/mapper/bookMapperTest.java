@@ -13,6 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class bookMapperTest {
     SqlSession sqlSession = SqlSessionUtil.getSqlSession();
     bookMapper mapper = sqlSession.getMapper(bookMapper.class);
+    @Test
+    void addBook1() {
+        int i = mapper.queryForPageTotalCount();
+        System.out.println(i);
+    }
+    @Test
+    void queryForPageItemsByPric() {
+        List<Book> books = mapper.queryForPageItemsByPrice(1, 5, 20, 100);
+        System.out.println(books);
+    }
 
     @Test
     void addBook() {

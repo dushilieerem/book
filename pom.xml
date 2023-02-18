@@ -19,11 +19,11 @@
 
   <dependencies>
       <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>5.0.0</version>
-      <scope>provided</scope>
-    </dependency>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
+         <version>5.0.0-M1</version>
+          <scope>provided</scope>
+      </dependency>
      <!--   log4j日志   -->
       <dependency>
           <groupId>log4j</groupId>
@@ -63,7 +63,14 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>      </dependencies>
+      </dependency>
+      <dependency>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+          <version>1.8.3</version>
+      </dependency>
+
+  </dependencies>
 
   <build>
         <plugins>

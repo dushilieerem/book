@@ -9,11 +9,13 @@
 <%
     String basepath=request.getScheme()
     +"://"+request.getServerName()
-    +"://"+request.getServerPort()
-    +"://"+request.getContextPath()
+            +":"
+    +request.getServerPort()
+    +request.getContextPath()
     +"/";
     pageContext.setAttribute("basepath",basepath);
 %>
-<base href="<%=basepath%> >">
-<script src="/js/jquery-1.7.2.js"></script>
-<style rel="stylesheet" href="/css/style.css"></style>
+<base href="<%=basepath%> ">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
