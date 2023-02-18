@@ -20,7 +20,7 @@
                 // location.href = "http://localhost:8080/book/CartServlet?action=addItem&id=" + bookId;
 
                 // 发ajax请求，添加商品到购物车
-                $.getJSON("http://localhost:8080/book/CartServlet","action=ajaxAddItem&id=" + bookId,function (data) {
+                $.getJSON("http://localhost:8080/MyOnlineBook/CartServlet","action=ajaxAddItem&id=" + bookId,function (data) {
                     $("#cartTotalCount").text("您的购物车中有 " + data.totalCount + " 件商品");
                     $("#cartLastName").text(data.lastName);
 
@@ -40,18 +40,18 @@
     <div>
         <%--如果用户还没有登录，显示     【登录 和注册的菜单】 --%>
         <c:if test="${empty sessionScope.user}">
-            <a href="login.jsp">登录</a> |
-            <a href="jsp/regist.jsp">注册</a> &nbsp;&nbsp;
+            <a href="page/user/login.jsp">登录</a> |
+            <a href="page/user/regist.jsp">注册</a> &nbsp;&nbsp;
         </c:if>
         <%--如果已经登录，则显示 登录 成功之后的用户信息。--%>
         <c:if test="${not empty sessionScope.user}">
             <span>欢迎<span class="um_span">${sessionScope.user.username}</span>光临尚硅谷书城</span>
-            <a href="page/order/order.jsp">我的订单</a>
+            <a href="order/order.jsp">我的订单</a>
             <a href="UserServlet?action=logout">注销</a>&nbsp;&nbsp;&nbsp;
         </c:if>
 
-        <a href="jsp/cart/cart.jsp">购物车</a>
-        <a href="jsp/manager/manager.jsp">后台管理</a>
+        <a href="cart/cart.jsp">购物车</a>
+        <a href="manager/manager.jsp">后台管理</a>
     </div>
 </div>
 

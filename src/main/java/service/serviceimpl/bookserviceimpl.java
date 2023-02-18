@@ -84,22 +84,25 @@ public class bookserviceimpl implements bookservice {
 
     @Override
     public void addBook(Book book) {
-
+mapper.addBook(book);
     }
 
     @Override
     public void deleteBookById(Integer id) {
-
+mapper.deleteBookById(id);
     }
 
     @Override
     public void updateBook(Book book) {
-
+mapper.updateBook(book);
     }
 
     @Override
     public Book queryBookById(Integer id) {
-        return null;
+        Book book = mapper.queryBookById(id);
+
+
+        return book;
     }
 
     @Override
@@ -110,6 +113,7 @@ public class bookserviceimpl implements bookservice {
 
     @Override
     public int queryForPageTotalCount() {
-        return 0;
+        int i = mapper.queryForPageTotalCount();
+        return i;
     }
 }
